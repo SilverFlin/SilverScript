@@ -5,8 +5,16 @@ import https from 'https'
 import helmet from 'helmet'
 import express, { NextFunction, Request, Response } from 'express'
 
-const app = express()
+require('dotenv').config()
+
 const PORT = 3000;
+
+const config = {
+    CLIENT_ID: process.env.CLIENT_ID,
+    CLIENT_SECRET: process.env.CLIENT_SECRET
+}
+
+const app = express()
 
 /*Securing HTTP through Headers*/
 app.use(helmet())
