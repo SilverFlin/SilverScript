@@ -21,10 +21,7 @@ const config = {
 }
 
 /* Passport Strategy Configuration*/
-function verifyCallback(accessToken: unknown, refreshToken: unknown, profile: unknown, done: Function) {
-    console.log('Google Profile', profile);
-    console.log('accessToken', accessToken);
-    console.log('refreshToken', refreshToken);
+function verifyCallback(_accessToken: unknown, _refreshToken: unknown, profile: unknown, done: Function) {
     done(null, profile)
 }
 
@@ -73,7 +70,7 @@ app.use(passport.session())
 /* Middleware*/
 // TODO: move them apart
 function checkLoggedIn(req: Request, res: Response, next: NextFunction) {
-    const isLoggedIn = true; // TODO
+    const isLoggedIn = req.isAuthenticated() && req.user;
 
     if (!isLoggedIn) {
         return res.status(401).json({
@@ -99,7 +96,12 @@ app.get("/auth/google", passport.authenticate('google', {
     scope: ['email']
 }))
 
-app.get("/auth/logout", (req, res) => { })
+app.get("/auth/logout", (req, res) => {
+    req.logOut((err) => {
+        console.error(err)
+    });
+    return res.redirect('/')
+})
 
 app.get("/auth/google/callback",
     passport.authenticate('google', {
