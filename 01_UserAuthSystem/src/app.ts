@@ -4,7 +4,8 @@ import https from 'https'
 
 import helmet from 'helmet'
 import passport from "passport"
-import { Strategy } from 'passport-google-oauth20'
+import cookieSession from "cookie-session"
+import { Profile, Strategy } from 'passport-google-oauth20'
 import express, { NextFunction, Request, Response } from 'express'
 
 require('dotenv').config()
@@ -14,7 +15,9 @@ const PORT = 3000;
 /* Chrome credentials*/
 const config = {
     CLIENT_ID: process.env.CLIENT_ID,
-    CLIENT_SECRET: process.env.CLIENT_SECRET
+    CLIENT_SECRET: process.env.CLIENT_SECRET,
+    COOKIE_KEY_1: process.env.COOKIE_KEY_1,
+    COOKIE_KEY_2: process.env.COOKIE_KEY_2,
 }
 
 /* Passport Strategy Configuration*/
@@ -28,19 +31,44 @@ function verifyCallback(accessToken: unknown, refreshToken: unknown, profile: un
 passport.use(new Strategy({
     callbackURL: '/auth/google/callback',
     clientID: config.CLIENT_ID as string,
-    clientSecret: config.CLIENT_SECRET as string
+    clientSecret: config.CLIENT_SECRET as string,
 }, verifyCallback))
+
+/* Save the session to the cookie */
+passport.serializeUser((user: Express.User, done) => {
+    // Taking only the id to use less cookie memory.
+    done(null, (user as Profile).id)
+})
+
+/* Read the session from the cookie */
+passport.deserializeUser((id: Express.User, done) => {
+    /* Database example */
+    // User.findById(id).then(user =>{
+    //     done(null,user);
+    // });
+
+    done(null, id)
+})
 
 /* Init Express */
 const app = express()
 
 /*Securing HTTP through Headers*/
 app.use(helmet())
+
+app.use(cookieSession({
+    name: 'session',
+    maxAge: 24 * 60 * 60 * 1000,
+    // two keys to change change the keys that are being used
+    keys: [config.COOKIE_KEY_1 as string, config.COOKIE_KEY_2 as string]
+}))
+
 /*  Passport handles the Authorization code response,
     it sends the auth code with the credentials to the auth server,
     and returns the token with extra information.
     */
 app.use(passport.initialize())
+app.use(passport.session())
 
 /* Middleware*/
 // TODO: move them apart
@@ -77,7 +105,7 @@ app.get("/auth/google/callback",
     passport.authenticate('google', {
         failureRedirect: '/failure',
         successRedirect: '/',
-        session: false
+        session: true
     }), (req, res) => {
         console.log('Google called us back')
     })
