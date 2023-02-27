@@ -6,7 +6,7 @@ This repository contains multiple projects. Each project is contained within its
 Each project folder contains a README file with instructions in it.
 
 ## Projects
-- [ ] User Auth System (Pending)
+- [X] [User Auth System](./01_UserAuthSystem/) (Done)
 - [ ] Proxy Server (Pending)
 - [ ] BookStore RESTful API (Pending)  
 - [ ] Local-Based Chat App (Pending)  
