@@ -8,5 +8,5 @@ Each project folder contains a README file with instructions in it.
 ## Projects
 - [X] [User Auth System](./01_UserAuthSystem/) (Done)
 - [X] [Proxy Server](./02_ProxyServer) (Done)
-- [ ] BookStore RESTful API (Pending)  
+- [ ] [BookStore RESTful API](./03_BookStore_RESTful/) (Pending)  
 - [ ] Local-Based Chat App (Pending)  
