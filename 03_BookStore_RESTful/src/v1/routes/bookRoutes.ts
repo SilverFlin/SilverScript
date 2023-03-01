@@ -1,27 +1,18 @@
 // /books/1
 import express from "express"
+import { deleteBook, getAllBooks, getBookById, patchBook, postBook } from "../../controllers/bookController"
 
 const router = express()
 
-router.get("/", (req, res) => {
-    return res.json({ message: `All books` })
-})
+router.get("/", getAllBooks)
 
-router.get("/:id", (req, res) => {
-    return res.json({ message: `Book #${req.params.id} Info.` })
-})
+router.get("/:id", getBookById)
 
-router.post("/", (req, res) => {
-    return res.json({ message: `Post Book` })
-})
+router.post("/", postBook)
 
-router.patch("/:id", (req, res) => {
-    return res.json({ message: `Patch Book #${req.params.id}.` })
-})
+router.patch("/:id", patchBook)
 
-router.delete("/:id", (req, res) => {
-    return res.json({ message: `Delete Book #${req.params.id}.` })
-})
+router.delete("/:id", deleteBook)
 
 
 export default router
