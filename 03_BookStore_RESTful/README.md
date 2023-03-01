@@ -11,7 +11,8 @@
 ### TODOS
 - [X] init server
 - [ ] Specify Endpoints
-- [ ] api versioning support
+- [X] api versioning support
+    - [ ] version-specific controllers/services
 - [ ] HTTPS
 - [ ] Documentation
 - [ ] DB connection
