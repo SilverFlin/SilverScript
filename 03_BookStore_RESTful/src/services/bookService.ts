@@ -61,8 +61,12 @@ const patchBook = (rawId: number | string, body: BookReqBody) => {
     return book
 }
 
-const deleteBook = () => {
-    return
+const deleteBook = (rawId: number | string) => {
+    const id = +rawId;
+    const book = getBookById(id)
+    if (!book) return undefined
+    books.delete(id)
+    return book
 }
 
 const createBookFromBody = (body: BookReqBody) => {

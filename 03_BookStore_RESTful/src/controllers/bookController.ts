@@ -40,7 +40,13 @@ const patchBook = (req: Request, res: Response) => {
 
 
 const deleteBook = (req: Request, res: Response) => {
-    return res.json({ message: `Delete Book #${req.params.id}.` })
+    const id = req.params.id;
+    const deletedBook = bookService.deleteBook(id);
+    if (!deletedBook) {
+        return res.status(400).json({ error: "Book not found" })
+    }
+
+    return res.json(deletedBook)
 }
 
 export {
