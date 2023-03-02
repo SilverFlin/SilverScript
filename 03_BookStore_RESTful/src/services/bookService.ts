@@ -44,23 +44,35 @@ const getBookById = (rawId: string | number) => {
 }
 
 const postBook = (body: BookReqBody): Book | undefined => {
+    const book = createBookFromBody(body)
+    if (!book) return undefined;
+    lastId++;
+    books.set(lastId, book)
+    return book
+}
+
+const patchBook = (rawId: number | string, body: BookReqBody) => {
+    let id = +rawId;
+    if (!getBookById(id)) return undefined
+
+    const book = createBookFromBody(body);
+    books.set(id, book)
+
+    return book
+}
+
+const deleteBook = () => {
+    return
+}
+
+const createBookFromBody = (body: BookReqBody) => {
     const date = new Date(body.pubDate);
     if (date.toString() === "Invalid Date") {
         return undefined
     }
 
     const book = new Book(body.title, body.author, body.isbn, +body.noPages, body.language, date)
-    lastId++;
-    books.set(lastId, book)
     return book
-}
-
-const patchBook = () => {
-    return
-}
-
-const deleteBook = () => {
-    return
 }
 
 export {

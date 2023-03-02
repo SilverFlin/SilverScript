@@ -28,7 +28,13 @@ const postBook = (req: Request, res: Response) => {
 }
 
 const patchBook = (req: Request, res: Response) => {
-    return res.json({ message: `Patch Book #${req.params.id}` })
+    const id = req.params.id
+    const book = bookService.patchBook(id, req.body as unknown as BookReqBody)
+    if (!book) {
+        return res.status(400).json({ error: "Invalid Params" })
+    }
+
+    return res.json(book)
 }
 
 
