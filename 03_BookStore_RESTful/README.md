@@ -16,6 +16,11 @@
 - [ ] HTTPS
 - [ ] Documentation
 - [ ] DB connection
-    - [ ] temporal data w/js objects
+    - [X] temporal data w/js objects
 - [ ] Tests
+- [ ] Book data
+    - [ ] uuid
+    - [ ] last updated
+    - [ ] created at
+    - [ ] Pagination
 
