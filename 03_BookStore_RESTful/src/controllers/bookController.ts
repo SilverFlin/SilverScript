@@ -14,14 +14,22 @@ const getBookById = (req: Request, res: Response) => {
     if (book) {
         return res.json(book)
     } else {
-        return res.status(400).json({ error: "Book not found" })
+        return res.status(404).json({
+            status: "FAILED", data: {
+                error: "The book was not found by the giving id"
+            }
+        })
     }
 }
 
 const postBook = (req: Request, res: Response) => {
     const book = bookService.postBook(req.body as unknown as BookReqBody);
     if (!book) {
-        return res.status(400).json({ error: "Invalid Params" })
+        return res.status(400).json({
+            status: "FAILED", data: {
+                error: "One of the following keys is missing or is empty in the request body: 'title', 'author', 'isbn', 'noPages', 'language', or 'pubDate'"
+            }
+        })
     }
 
     return res.json(book)
@@ -29,9 +37,20 @@ const postBook = (req: Request, res: Response) => {
 
 const patchBook = (req: Request, res: Response) => {
     const id = req.params.id
+    if (!bookService.getBookById(id)) {
+        return res.status(404).json({
+            status: "FAILED", data: {
+                error: "The book was not found by the giving id"
+            }
+        })
+    }
     const book = bookService.patchBook(id, req.body as unknown as BookReqBody)
     if (!book) {
-        return res.status(400).json({ error: "Invalid Params" })
+        return res.status(400).json({
+            status: "FAILED", data: {
+                error: "One of the following keys is missing or is empty in the request body: 'title', 'author', 'isbn', 'noPages', 'language', or 'pubDate'"
+            }
+        })
     }
 
     return res.json(book)
@@ -43,7 +62,11 @@ const deleteBook = (req: Request, res: Response) => {
     const id = req.params.id;
     const deletedBook = bookService.deleteBook(id);
     if (!deletedBook) {
-        return res.status(400).json({ error: "Book not found" })
+        return res.status(404).json({
+            status: "FAILED", data: {
+                error: "The book was not found by the giving id"
+            }
+        })
     }
 
     return res.json(deletedBook)

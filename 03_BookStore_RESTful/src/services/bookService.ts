@@ -6,6 +6,7 @@ let lastId = 1;
 books.set(
     0,
     new Book(
+        0,
         "Atomic Habits",
         "James Clear",
         "0735211299",
@@ -18,6 +19,7 @@ books.set(
 books.set(
     1,
     new Book(
+        1,
         "Mistborn 1",
         "0735211299",
         "Brandon Sanderson",
@@ -44,9 +46,9 @@ const getBookById = (rawId: string | number) => {
 }
 
 const postBook = (body: BookReqBody): Book | undefined => {
+    lastId++;
     const book = createBookFromBody(body)
     if (!book) return undefined;
-    lastId++;
     books.set(lastId, book)
     return book
 }
@@ -74,8 +76,7 @@ const createBookFromBody = (body: BookReqBody) => {
     if (date.toString() === "Invalid Date") {
         return undefined
     }
-
-    const book = new Book(body.title, body.author, body.isbn, +body.noPages, body.language, date)
+    const book = new Book(lastId, body.title, body.author, body.isbn, +body.noPages, body.language, date)
     return book
 }
 

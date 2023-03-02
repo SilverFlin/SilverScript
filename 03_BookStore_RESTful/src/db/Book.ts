@@ -1,5 +1,6 @@
 class Book {
     constructor(
+        private id: number,
         private title: string,
         private author: string,
         private isbn: string,
