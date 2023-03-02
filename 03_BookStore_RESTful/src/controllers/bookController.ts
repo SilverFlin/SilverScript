@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { BookReqBody } from "../db/Book";
 import * as bookService from "../services/bookService"
 
 const getAllBooks = (req: Request, res: Response) => {
@@ -18,7 +19,12 @@ const getBookById = (req: Request, res: Response) => {
 }
 
 const postBook = (req: Request, res: Response) => {
-    return res.json({ message: `Post Book` })
+    const book = bookService.postBook(req.body as unknown as BookReqBody);
+    if (!book) {
+        return res.status(400).json({ error: "Invalid Params" })
+    }
+
+    return res.json(book)
 }
 
 const patchBook = (req: Request, res: Response) => {

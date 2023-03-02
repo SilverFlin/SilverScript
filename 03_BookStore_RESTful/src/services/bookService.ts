@@ -1,9 +1,10 @@
-import { Book } from "../db/Book"
+import { Book, BookReqBody } from "../db/Book"
 
 const books = new Map();
+let lastId = 1;
 
 books.set(
-    "0",
+    0,
     new Book(
         "Atomic Habits",
         "James Clear",
@@ -15,7 +16,7 @@ books.set(
 )
 
 books.set(
-    "1",
+    1,
     new Book(
         "Mistborn 1",
         "0735211299",
@@ -36,13 +37,22 @@ const getAllBooks = () => {
     return allBooks
 }
 
-const getBookById = (id: string) => {
+const getBookById = (rawId: string | number) => {
+    let id = +rawId;
     const book = books.get(id)
     return book;
 }
 
-const postBook = () => {
-    return
+const postBook = (body: BookReqBody): Book | undefined => {
+    const date = new Date(body.pubDate);
+    if (date.toString() === "Invalid Date") {
+        return undefined
+    }
+
+    const book = new Book(body.title, body.author, body.isbn, +body.noPages, body.language, date)
+    lastId++;
+    books.set(lastId, book)
+    return book
 }
 
 const patchBook = () => {
