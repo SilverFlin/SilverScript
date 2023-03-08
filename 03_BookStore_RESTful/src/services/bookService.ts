@@ -1,33 +1,32 @@
-import { Book, BookReqBody } from "../db/Book"
+import { BookReqBody } from "../db/Book"
+import { Book, IBook } from "../db/BookSchema";
 
 const books = new Map();
 let lastId = 1;
 
 books.set(
     0,
-    new Book(
-        0,
-        "Atomic Habits",
-        "James Clear",
-        "0735211299",
-        200,
-        "English",
-        new Date(18, 10, 16)
-    )
-)
+    new Book({
+        id: 0,
+        title: "Atomic Habits",
+        author: "James Clear",
+        isbn: "0735211299",
+        noPages: 200,
+        language: "English",
+        pubDate: new Date(18, 10, 16)
+    }))
 
 books.set(
     1,
-    new Book(
-        1,
-        "Mistborn 1",
-        "Brandon Sanderson",
-        "0735211299",
-        200,
-        "English",
-        new Date(13, 11, 9)
-    )
-)
+    new Book({
+        id: 1,
+        title: "Mistborn 1",
+        author: "Brandon Sanderson",
+        isbn: "0735211299",
+        noPages: 200,
+        language: "English",
+        pubDate: new Date(13, 11, 9)
+    }))
 
 
 const getAllBooks = () => {
@@ -39,17 +38,18 @@ const getAllBooks = () => {
     return allBooks
 }
 
-const getBookById = (rawId: string | number) => {
+const getBookById = async (rawId: string | number) => {
     let id = +rawId;
-    const book = books.get(id)
+    const book = await Book.findOne({ id })
     return book;
 }
 
-const postBook = (body: BookReqBody): Book | undefined => {
+const postBook = async (body: BookReqBody) => {
     lastId++;
     const book = createBookFromBody(body)
     if (!book) return undefined;
-    books.set(lastId, book)
+    // books.set(lastId, book)
+    await book.save()
     return book
 }
 
@@ -73,10 +73,17 @@ const deleteBook = (rawId: number | string) => {
 
 const createBookFromBody = (body: BookReqBody) => {
     const date = new Date(body.pubDate);
-    if (date.toString() === "Invalid Date") {
-        return undefined
-    }
-    const book = new Book(lastId, body.title, body.author, body.isbn, +body.noPages, body.language, date)
+    if (date.toString() === "Invalid Date") return undefined
+
+    const book = new Book({
+        id: lastId,
+        title: body.title,
+        author: body.author,
+        isbn: body.isbn,
+        noPages: +body.noPages,
+        language: body.language,
+        date: date
+    })
     return book
 }
 

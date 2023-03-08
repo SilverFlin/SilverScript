@@ -8,9 +8,9 @@ const getAllBooks = (req: Request, res: Response) => {
     return res.json(allBooks)
 }
 
-const getBookById = (req: Request, res: Response) => {
+const getBookById = async (req: Request, res: Response) => {
     let id = req.params.id;
-    const book = bookService.getBookById(id)
+    const book = await bookService.getBookById(id)
     if (book) {
         return res.json(book)
     } else {
@@ -22,8 +22,8 @@ const getBookById = (req: Request, res: Response) => {
     }
 }
 
-const postBook = (req: Request, res: Response) => {
-    const book = bookService.postBook(req.body as unknown as BookReqBody);
+const postBook = async (req: Request, res: Response) => {
+    const book = await bookService.postBook(req.body as unknown as BookReqBody);
     if (!book) {
         return res.status(400).json({
             status: "FAILED", data: {
