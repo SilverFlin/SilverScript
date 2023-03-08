@@ -13,7 +13,7 @@
 - [X] Specify Endpoints
 - [X] api versioning support
     - [ ] version-specific controllers/services
-- [ ] HTTPS
+- [X] HTTPS
 - [ ] Documentation
 - [ ] DB connection
     - [X] temporal data w/js objects
