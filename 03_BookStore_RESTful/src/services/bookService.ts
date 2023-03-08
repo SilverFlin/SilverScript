@@ -29,12 +29,8 @@ books.set(
     }))
 
 
-const getAllBooks = () => {
-    const iterator = books.values();
-    const allBooks = []
-    for (const book of iterator) {
-        allBooks.push(book)
-    }
+const getAllBooks = async () => {
+    const allBooks = await Book.find({})
     return allBooks
 }
 
@@ -48,19 +44,23 @@ const postBook = async (body: BookReqBody) => {
     lastId++;
     const book = createBookFromBody(body)
     if (!book) return undefined;
-    // books.set(lastId, book)
     await book.save()
     return book
 }
 
-const patchBook = (rawId: number | string, body: BookReqBody) => {
+const patchBook = async (rawId: number | string, body: BookReqBody) => {
     let id = +rawId;
     if (!getBookById(id)) return undefined
 
     const book = createBookFromBody(body);
-    books.set(id, book)
+    Book.findOneAndUpdate({ id }, book)
+        .then(() => {
+            return book
+        })
+        .catch(() => {
+            return undefined
+        })
 
-    return book
 }
 
 const deleteBook = (rawId: number | string) => {

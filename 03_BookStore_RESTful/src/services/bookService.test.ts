@@ -1,5 +1,5 @@
 import { BookReqBody } from "../db/Book";
-import Book from "../db/BookSchema";
+import { Book } from "../db/BookSchema";
 import { deleteBook, getAllBooks, getBookById, postBook } from "./bookService";
 
 

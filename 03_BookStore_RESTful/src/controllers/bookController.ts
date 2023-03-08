@@ -2,9 +2,9 @@ import { Request, Response } from "express";
 import { BookReqBody } from "../db/Book";
 import * as bookService from "../services/bookService"
 
-const getAllBooks = (req: Request, res: Response) => {
+const getAllBooks = async (req: Request, res: Response) => {
     // TODO add pagination
-    const allBooks = bookService.getAllBooks()
+    const allBooks = await bookService.getAllBooks()
     return res.json(allBooks)
 }
 
