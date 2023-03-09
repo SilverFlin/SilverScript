@@ -58,9 +58,9 @@ const patchBook = (req: Request, res: Response) => {
 
 
 
-const deleteBook = (req: Request, res: Response) => {
+const deleteBook = async (req: Request, res: Response) => {
     const id = req.params.id;
-    const deletedBook = bookService.deleteBook(id);
+    const deletedBook = await bookService.deleteBook(id);
     if (!deletedBook) {
         return res.status(404).json({
             status: "FAILED", data: {
