@@ -15,7 +15,7 @@
     - [ ] version-specific controllers/services
 - [X] HTTPS
 - [ ] Documentation
-- [ ] DB connection
+- [X] DB connection
     - [X] temporal data w/js objects
 - [ ] Tests
 - [ ] Book data
@@ -23,4 +23,5 @@
     - [ ] last updated
     - [ ] created at
     - [ ] Pagination
+
 

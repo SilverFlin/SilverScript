@@ -1,8 +1,9 @@
+import * as dotenv from 'dotenv'
+dotenv.config()
 import https from "https"
 import fs from "fs"
 
 import express from "express"
-
 import mongoose from "mongoose"
 
 import v1Router from "./v1/routes";
@@ -30,8 +31,7 @@ async function startServer() {
         console.log(`Listening on port: ${PORT}`)
     });
 
-
-    await mongoose.connect("mongodb://127.0.0.1:27017/test")
+    await mongoose.connect(process.env.MONGO_URI as string)
         .then(() => console.log('Database connection established'))
         .catch(console.error)
 }

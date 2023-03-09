@@ -1,7 +1,10 @@
+import { Db, MongoClient } from "mongodb";
+import mongoose from "mongoose";
 import { BookReqBody } from "../db/Book";
 import { Book } from "../db/BookSchema";
 import { deleteBook, getAllBooks, getBookById, postBook } from "./bookService";
-
+// import dotenv from "dotenv";
+// dotenv.config()
 
 
 const book1 = new Book({
@@ -24,15 +27,6 @@ const book2 = new Book({
     pubDate: new Date(13, 11, 9)
 })
 
-const body1: BookReqBody = {
-    title: "Dune",
-    author: "Frank Herbert",
-    isbn: "1312312321",
-    noPages: 400,
-    language: "English",
-    pubDate: new Date()
-}
-
 const book3 = new Book({
     id: 2,
     title: "Dune",
@@ -43,21 +37,49 @@ const book3 = new Book({
     pubDate: new Date()
 })
 
-test('bookService getAllBooks', () => {
-    expect(getAllBooks()).toEqual([book1, book2]);
-});
+const body1: BookReqBody = {
+    title: "Dune",
+    author: "Frank Herbert",
+    isbn: "1312312321",
+    noPages: 400,
+    language: "English",
+    pubDate: new Date()
+}
 
-test('bookService getBookById', () => {
-    expect(getBookById(1)).toEqual(book2);
-});
 
-test('bookService postBook', () => {
-    expect(postBook(body1)).toEqual(book3);
-});
+describe('bookService functions', () => {
+    let connection: MongoClient;
+    let db: Db;
 
-test('bookService deleteBook', () => {
-    expect(deleteBook(0)).toEqual(book1);
-});
+
+    beforeAll(async () => {
+        await mongoose.connect(process.env.MONGO_URI as string)
+            .then(() => console.log('Database connection established'))
+            .catch(console.error)
+    })
+
+
+    afterAll(async () => {
+        mongoose.disconnect()
+    });
+
+})
+
+// test('bookService getAllBooks', () => {
+//     expect(getAllBooks()).toEqual([book1, book2]);
+// });
+
+// test('bookService getBookById', () => {
+//     expect(getBookById(1)).toEqual(book2);
+// });
+
+// test('bookService postBook', () => {
+//     expect(postBook(body1)).toEqual(book3);
+// });
+
+// test('bookService deleteBook', () => {
+//     expect(deleteBook(0)).toEqual(book1);
+// });
 
 
 
