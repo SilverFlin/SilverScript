@@ -3,6 +3,10 @@ import { Book, IBook } from "../db/BookSchema";
 
 let lastId = 1;
 
+// TODO Delete me
+resetTestDatabase();
+
+
 const getAllBooks = async () => {
     const allBooks = await Book.find({});
     return allBooks;
@@ -60,3 +64,36 @@ const createBookFromBody = (body: BookReqBody) => {
 };
 
 export { getAllBooks, getBookById, postBook, patchBook, deleteBook };
+
+
+function resetTestDatabase() {
+    const fakeBook = new Book({
+        id: 0,
+        title: "Atomic Habits",
+        author: "James Clear",
+        isbn: "0735211299",
+        noPages: 200,
+        language: "English",
+        pubDate: new Date(18, 10, 16),
+    });
+
+    const fakeBook1 = new Book({
+        id: 1,
+        title: "Mistborn 1",
+        author: "Brandon Sanderson",
+        isbn: "0735211299",
+        noPages: 200,
+        language: "English",
+        pubDate: new Date(13, 11, 9),
+    });
+
+    Book.deleteMany({})
+        .then(() => console.log('Database cleared'))
+        .catch((e) => console.log(`Error at deleting the database: ${e}`))
+
+    Book.insertMany([fakeBook, fakeBook1])
+        .then(() => {
+            console.log('Fake books inserted')
+        })
+        .catch((e) => console.log(`Error at inserting the fake books: ${e}`))
+}
