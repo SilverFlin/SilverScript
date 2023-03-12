@@ -66,7 +66,7 @@ const createBookFromBody = (body: BookReqBody) => {
 export { getAllBooks, getBookById, postBook, patchBook, deleteBook };
 
 
-function resetTestDatabase() {
+async function resetTestDatabase() {
     const fakeBook = new Book({
         id: 0,
         title: "Atomic Habits",
@@ -87,11 +87,11 @@ function resetTestDatabase() {
         pubDate: new Date(13, 11, 9),
     });
 
-    Book.deleteMany({})
+    await Book.deleteMany({})
         .then(() => console.log('Database cleared'))
         .catch((e) => console.log(`Error at deleting the database: ${e}`))
 
-    Book.insertMany([fakeBook, fakeBook1])
+    await Book.insertMany([fakeBook, fakeBook1])
         .then(() => {
             console.log('Fake books inserted')
         })
