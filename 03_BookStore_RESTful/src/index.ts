@@ -5,6 +5,7 @@ import fs from "fs"
 
 import express from "express"
 import helmet from "helmet"
+import cors from "cors"
 import mongoose from "mongoose"
 
 import v1Router from "./v1/routes";
@@ -18,6 +19,8 @@ const app = express();
 
 app.use(express.json())
 app.use(helmet())
+app.use(cors())
+
 
 /* Mount Routers */
 app.use("/v1", v1Router)
