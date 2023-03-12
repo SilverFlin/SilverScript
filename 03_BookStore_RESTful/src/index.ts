@@ -4,6 +4,7 @@ import https from "https"
 import fs from "fs"
 
 import express from "express"
+import helmet from "helmet"
 import mongoose from "mongoose"
 
 import v1Router from "./v1/routes";
@@ -16,6 +17,7 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 
 app.use(express.json())
+app.use(helmet())
 
 /* Mount Routers */
 app.use("/v1", v1Router)
